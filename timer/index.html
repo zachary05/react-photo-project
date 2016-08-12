@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer</title>
+  <script src="./js/react.js" charset="utf-8"></script>
+  <script src="./js/react-dom.js" charset="utf-8"></script>
+  <script src="./js/browser.min.js" charset="utf-8"></script>
+  <style media="screen">
+    body{
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Helvetica Neue";
+      font-weight: 100;
+      font-size: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+  var TimerExample = React.createClass({
+      getInitialState: function(){
+          return { elapsed: 0 };
+      },
+      componentDidMount: function(){
+          setInterval(this.tick, 50);
+      },
+      componentWillUnmount: function(){
+          clearInterval(this.timer);
+      },
+      tick: function(){
+          this.setState({elapsed: new Date() - this.props.start});
+      },
+      render: function() {
+          var seconds = (this.state.elapsed / 1000).toFixed(1);
+          return (<p>You have browser this site <b>{seconds} seconds</b>.</p>);
+      }
+  });
+  ReactDOM.render(
+    <TimerExample start={Date.now()} />,
+      document.getElementById('container')
+  );
+  </script>
+</body>
+</html>
