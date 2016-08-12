@@ -6,26 +6,28 @@
   <script src="./js/react.js" charset="utf-8"></script>
   <script src="./js/react-dom.js" charset="utf-8"></script>
   <script src="./js/browser.min.js" charset="utf-8"></script>
-  <link rel="stylesheet" href="./s.css" media="screen" title="no title" charset="utf-8">
+  <link rel="stylesheet" href="./search.css" media="screen" title="no title" charset="utf-8">
 </head>
 <body>
   <div id="container"></div>
   <script type="text/babel">
 
   var Search = React.createClass({
-    getInitialState: function() {
+    getInitialState: function() { // 初始化state值，将searchString设为‘’
       return {
         searchString: ''
       };
     },
-    handleChange:function (e) {
+
+    handleChange:function (e) { // 当input输入框发生onChange事件时，将默认的state值改为输入值
       this.setState({searchString: e.target.value})
     },
+
     render:function () {
-      var libraries = this.props.items,
-          searchString = this.state.searchString.trim().toLowerCase();
-      if (searchString.length > 0) {
-          libraries = libraries.filter(function (lib) {
+      var libraries = this.props.items, // 获取父类的props值，赋值为libraries
+          searchString = this.state.searchString.trim().toLowerCase(); // 获取state的searchString值，并去掉前后空格并小写，方便后面匹配
+      if (searchString.length > 0) { // 若输入的searchString值存在
+          libraries = libraries.filter(function (lib) { // 将libraries的name进行过滤，返回与[输入字符]相匹配的libraries
             return lib.name.toLowerCase().match(searchString)
           });
       };
@@ -34,7 +36,7 @@
           <input type="text" onChange={this.handleChange} placeholder='Search lib here'/>
           <ul>
             {
-              libraries.map(function (lib) {
+              libraries.map(function (lib) { // 对经过筛选的libraries进行遍历，并生成<li>
                   return (
                     <li>{lib.name}<a href={lib.url}>{lib.url}</a></li>
                   )
@@ -46,7 +48,7 @@
     }
   })
 
-  var libraries = [
+  var libraries = [ // 给父组件设置默认的props值，方便子类调用
 
       { name: 'Backbone.js', url: 'http://documentcloud.github.io/backbone/'},
       { name: 'AngularJS', url: 'https://angularjs.org/'},
