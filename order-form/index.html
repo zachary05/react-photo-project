@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FORM-order</title>
+  <script src="./js/react.js" charset="utf-8"></script>
+  <script src="./js/react-dom.js" charset="utf-8"></script>
+  <script src="./js/browser.min.js" charset="utf-8"></script>
+  <link rel="stylesheet" href="./form.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+    var ServiceChooser = React.createClass({
+      getInitialState: function() {
+        return {
+          total: 0
+        };
+      },
+      addTotal:function (price) {
+        this.setState({total: this.state.total + price})
+      },
+      render:function () {
+        var _this = this;
+
+        var services = this.props.items.map(function (x) {
+          return(
+            <Service name={x.name} price={x.price} addTotal={_this.addTotal}/>
+          )
+        })
+        return(
+          <div id='border'>
+            <h1> My Services</h1>
+            <div id="services">
+              {services}
+              <p id="total">Total<b>{this.state.total.toFixed(2)}</b></p>
+            </div>
+          </div>
+        )
+      }
+    })
+
+    var Service = React.createClass({
+      getInitialState: function() {
+        return {
+          active: false
+        };
+      },
+      clickHandler:function (e) {
+         var active = !this.state.active;
+         this.setState({active: active});
+         this.props.addTotal(active? this.props.price: -this.props.price)
+      },
+      render:function () {
+        return(
+          <p className={this.state.active ? 'active' : ''} onClick={this.clickHandler}>{this.props.name}<b>${this.props.price.toFixed(2)}</b></p>
+        )
+      }
+    })
+
+var services = [
+  { name: '亲亲', price: 5 },
+  { name: '抱抱', price: .2 },
+  { name: '爱爱', price: 0 }
+];
+ReactDOM.render(
+  <ServiceChooser items={ services } />,
+  document.getElementById('container')
+);
+  </script>
+</body>
+</html>
+<!--
+要实现的逻辑是：
+1.单击单个条目时，背景的样式改变（变为蓝色），再次单击时，样式还原；
+2.单击每个条目时，total值变为单个条目的price总和；
+-->
