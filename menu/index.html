@@ -11,35 +11,39 @@
 <body>
   <div id="container"></div>
   <script type="text/babel">
-    var Menu = React.createClass({
-      getInitialState: function() {
-        return {
-          focused: 0
-        };
-      },
-      clicked:function (index) {
-        this.setState({focused: index})
-      },
-      render:function () {
-        var _this = this
-        return(
-          <div>
-            <ul>
-              {this.props.items.map(function (x, index) {
-                var style = ''
-                if (_this.state.focused == index) {
-                  style = 'focused'
+  var Menu = React.createClass({
+    getInitialState: function() { // 设置初始状态
+      return {
+        focused: 0
+      };
+    },
+    clicked: function (index) { // 发生点击事件时，改变状态
+      this.setState({focused: index})
+    },
+    render:function () {
+      var _this = this; // 内部map函数遍历时，要用到外部环境，因此将this赋值给_this
+      return(
+        <div>
+          <ul>
+            {
+              this.props.items.map(function (x, index) {
+                var style = ''; // 设置li的类名为style，方便修改样式
+                if (_this.state.focused == index) { // 如果状态等于索引值，将类名style改为focused
+                    style = 'focused';
                 }
-                return(
-                  <li className={style} onClick={_this.clicked.bind(_this, index)}>{x.id}</li>
+                return ( // 返回每一项，将类名设置为style，并将onClick事件绑定到外部环境
+                  <li key={index} className={style} onClick={_this.clicked.bind(_this, index)}>{x.id}</li>
                 )
-              })}
-            </ul>
-            <img src={this.props.items[this.state.focused].url} alt=""/>
-          </div>
-        )
-      }
-    })
+              })
+            }
+          </ul>
+          <img src={this.props.items[this.state.focused].url} alt={this.props.items[this.state.focused].id}/>
+          <p>私は誰ですか  ?</p>
+          <hr/>
+        </div>
+      )
+    }
+  })
 
     var pics = [
       {id:'a',url:'./pic/8.png'},
