@@ -1,3 +1,7 @@
 # react-project
 
-some react-learning projects instore here.
+Some react-learning projects instore here.
+
+---
+
+Continuing update and study
